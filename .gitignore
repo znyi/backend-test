@@ -1,3 +1,9 @@
+# for my cpp addon.. just in case
+build
+
+# vscode
+.vscode/
+
 # Logs
 logs
 *.log
