@@ -1,6 +1,6 @@
 {
     "targets": [{
-        "target_name": "AngelDevAddon",
+        "target_name": "CppAddon",
         "cflags!": [ "-fno-exceptions" ],
         "cflags_cc!": [ "-fno-exceptions" ],
         "sources": [

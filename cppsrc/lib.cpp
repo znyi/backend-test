@@ -7,7 +7,7 @@
 #include <cmath>
 #include <iostream>
 
-bool angel::isPrime(int n){
+bool cppsrc::isPrime(int n){
       if(n == 1 || n == 0) return false;
       if(n == 2) return true;
       if (n % 2 == 0) return false;
@@ -18,7 +18,7 @@ bool angel::isPrime(int n){
       return true;
 }
 
-std::string angel::getPrimes(std::string jsonstr){
+std::string cppsrc::getPrimes(std::string jsonstr){
     rapidjson::Document doc;
     doc.Parse(jsonstr.c_str());
 
@@ -41,7 +41,7 @@ std::string angel::getPrimes(std::string jsonstr){
     return buffer.GetString();
 }
 
-Napi::String angel::getPrimesWrapped(const Napi::CallbackInfo& info){
+Napi::String cppsrc::getPrimesWrapped(const Napi::CallbackInfo& info){
     Napi::Env env = info.Env();
 
     if(info.Length() < 1 || !info[0].IsString()){ //error if improper args
@@ -50,12 +50,12 @@ Napi::String angel::getPrimesWrapped(const Napi::CallbackInfo& info){
 
     Napi::String inputJsonStr = info[0].As<Napi::String>();
 
-    Napi::String returnString = Napi::String::New(env, angel::getPrimes(inputJsonStr));
+    Napi::String returnString = Napi::String::New(env, cppsrc::getPrimes(inputJsonStr));
     
     return returnString;
 }
 
-Napi::Object angel::Init(Napi::Env env, Napi::Object exports) {
-    exports.Set("getPrimes", Napi::Function::New(env, angel::getPrimesWrapped)); 
+Napi::Object cppsrc::Init(Napi::Env env, Napi::Object exports) {
+    exports.Set("getPrimes", Napi::Function::New(env, cppsrc::getPrimesWrapped)); 
   return exports;
 }

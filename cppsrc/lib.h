@@ -1,5 +1,5 @@
 #include <napi.h>
-namespace angel {
+namespace cppsrc {
   Napi::Object Init(Napi::Env env, Napi::Object exports);
 
   bool isPrime(int n);
