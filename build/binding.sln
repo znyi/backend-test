@@ -13,18 +13,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(node-addon-api)", "..\node
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
 		Release|x64 = Release|x64
+		Debug|x64 = Debug|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6A0BA42A-530C-F6F6-7C22-1BAC16B1F904}.Debug|x64.ActiveCfg = Debug|x64
-		{6A0BA42A-530C-F6F6-7C22-1BAC16B1F904}.Debug|x64.Build.0 = Debug|x64
 		{6A0BA42A-530C-F6F6-7C22-1BAC16B1F904}.Release|x64.ActiveCfg = Release|x64
 		{6A0BA42A-530C-F6F6-7C22-1BAC16B1F904}.Release|x64.Build.0 = Release|x64
-		{A63A8A3B-14FA-972B-B2C5-B0630F5DD3DF}.Debug|x64.ActiveCfg = Debug|x64
-		{A63A8A3B-14FA-972B-B2C5-B0630F5DD3DF}.Debug|x64.Build.0 = Debug|x64
+		{6A0BA42A-530C-F6F6-7C22-1BAC16B1F904}.Debug|x64.ActiveCfg = Debug|x64
+		{6A0BA42A-530C-F6F6-7C22-1BAC16B1F904}.Debug|x64.Build.0 = Debug|x64
 		{A63A8A3B-14FA-972B-B2C5-B0630F5DD3DF}.Release|x64.ActiveCfg = Release|x64
 		{A63A8A3B-14FA-972B-B2C5-B0630F5DD3DF}.Release|x64.Build.0 = Release|x64
+		{A63A8A3B-14FA-972B-B2C5-B0630F5DD3DF}.Debug|x64.ActiveCfg = Debug|x64
+		{A63A8A3B-14FA-972B-B2C5-B0630F5DD3DF}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

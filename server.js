@@ -26,7 +26,6 @@ app.get('/sdo/command', (req, res)=> {
     const sdo_input_buffer = JSON.parse(outputString)
     res.json(sdo_input_buffer)
 })
-
 app.get('/sdo/output', (req, res)=> {
     const sdo_output_buffer = req.query.sdo_output_buffer //not JSON.parse bcs i need to pass string to cpp function
     const outputString = CppAddon.getSdoOutput(sdo_output_buffer)
@@ -34,8 +33,22 @@ app.get('/sdo/output', (req, res)=> {
     res.json(sdo_a_increased)
 })
 
-// console.log(CppAddon.getSdoCommand("5"))
-// console.log(CppAddon.getSdoOutput(JSON.stringify([2,59,1,2,9,1,1,6])))
+app.get('/pdo/command/exec', (req, res)=> {
+    const outputString = CppAddon.getPdoExecCommand()
+    const pdo_buffer = JSON.parse(outputString)
+    res.json(pdo_buffer)
+})
+app.get('/pdo/command/stop', (req, res)=> {
+    const outputString = CppAddon.getPdoStopCommand()
+    const pdo_buffer = JSON.parse(outputString)
+    res.json(pdo_buffer)
+})
+app.get('/pdo/output', (req, res)=> {
+    const pdo_output_buffer = req.query.pdo_output_buffer //not JSON.parse bcs i need to pass string to cpp function
+    const outputString = CppAddon.getPdoOutput(pdo_output_buffer)
+    const pdo_output_object = JSON.parse(outputString)
+    res.json(pdo_output_object)
+})
 
 app.listen(PORT, ()=>{
     console.log(`app listening at port ${PORT}.`)
