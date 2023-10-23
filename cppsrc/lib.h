@@ -2,7 +2,8 @@
 namespace cppsrc {
   Napi::Object Init(Napi::Env env, Napi::Object exports);
 
-  bool isPrime(int n);
-  std::string getPrimes(std::string jsonstr);
-  Napi::String getPrimesWrapped(const Napi::CallbackInfo& info);
+  std::string getSdoCommand(std::string jsonstr);
+  Napi::String getSdoCommandWrapped(const Napi::CallbackInfo& info);
+  std::string getSdoOutput(std::string jsonstr);
+  Napi::String getSdoOutputWrapped(const Napi::CallbackInfo& info);
 }

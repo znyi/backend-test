@@ -7,41 +7,34 @@
 #include <cmath>
 #include <iostream>
 
-bool cppsrc::isPrime(int n){
-      if(n == 1 || n == 0) return false;
-      if(n == 2) return true;
-      if (n % 2 == 0) return false;
-      
-      for(int i = 3; i <= std::sqrt(n); i += 2){
-        if(n % i == 0) return false;
-      }
-      return true;
-}
-
-std::string cppsrc::getPrimes(std::string jsonstr){
+std::string cppsrc::getSdoCommand(std::string jsonstr){
     rapidjson::Document doc;
     doc.Parse(jsonstr.c_str());
 
-    rapidjson::Value& startRange = doc["startRange"];
-    rapidjson::Value& endRange = doc["endRange"];
+    if (!doc.IsNumber()) {
+        std::cerr << "Invalid JSON document or not a number." << std::endl;
+        return "error in getSdoCommand - invalid argument";
+    }
 
-    rapidjson::Document primeList(rapidjson::kArrayType);
-    rapidjson::Document::AllocatorType& allocator = primeList.GetAllocator();
+    int a = doc.GetInt(); 
 
-    for(int i = startRange.GetInt(); i <= endRange.GetInt(); i++){
-        if(isPrime(i)){
-            primeList.PushBack(i, allocator);
-        }
+    rapidjson::Document sdoCommand(rapidjson::kArrayType);
+    rapidjson::Document::AllocatorType& allocator = sdoCommand.GetAllocator();
+
+    uint8_t sdoInputBuffer[] = {2, 20, 4, 2, 9, 1, 1, a}; 
+
+    for (uint8_t elem : sdoInputBuffer){
+        sdoCommand.PushBack(elem, allocator);
     }
  
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    primeList.Accept(writer);
+    sdoCommand.Accept(writer);
 
     return buffer.GetString();
 }
 
-Napi::String cppsrc::getPrimesWrapped(const Napi::CallbackInfo& info){
+Napi::String cppsrc::getSdoCommandWrapped(const Napi::CallbackInfo& info){
     Napi::Env env = info.Env();
 
     if(info.Length() < 1 || !info[0].IsString()){ //error if improper args
@@ -50,12 +43,48 @@ Napi::String cppsrc::getPrimesWrapped(const Napi::CallbackInfo& info){
 
     Napi::String inputJsonStr = info[0].As<Napi::String>();
 
-    Napi::String returnString = Napi::String::New(env, cppsrc::getPrimes(inputJsonStr));
+    Napi::String returnString = Napi::String::New(env, cppsrc::getSdoCommand(inputJsonStr));
+    
+    return returnString;
+}
+
+std::string cppsrc::getSdoOutput(std::string jsonstr){
+    rapidjson::Document doc;
+    doc.Parse(jsonstr.c_str());
+
+    if (!doc.IsArray()) {
+        std::cerr << "Invalid JSON document or not an array." << std::endl;
+        return "error in getSdoOutput - invalid argument";
+    }
+
+    rapidjson::Document sdoOutput(rapidjson::kNumberType);
+    rapidjson::Document::AllocatorType& allocator = sdoOutput.GetAllocator();
+ 
+    sdoOutput.SetUint(doc[doc.Size()-1].GetUint()); //take last elem
+
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    sdoOutput.Accept(writer);
+
+    return buffer.GetString();
+}
+
+Napi::String cppsrc::getSdoOutputWrapped(const Napi::CallbackInfo& info){
+    Napi::Env env = info.Env();
+
+    if(info.Length() < 1 || !info[0].IsString()){ //error if improper args
+        Napi::TypeError::New(env, "String expected").ThrowAsJavaScriptException();
+    }
+
+    Napi::String inputJsonStr = info[0].As<Napi::String>();
+
+    Napi::String returnString = Napi::String::New(env, cppsrc::getSdoOutput(inputJsonStr));
     
     return returnString;
 }
 
 Napi::Object cppsrc::Init(Napi::Env env, Napi::Object exports) {
-    exports.Set("getPrimes", Napi::Function::New(env, cppsrc::getPrimesWrapped)); 
+    exports.Set("getSdoCommand", Napi::Function::New(env, cppsrc::getSdoCommandWrapped)); 
+    exports.Set("getSdoOutput", Napi::Function::New(env, cppsrc::getSdoOutputWrapped)); 
   return exports;
 }
