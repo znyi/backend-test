@@ -43,11 +43,14 @@ app.get('/pdo/command/stop', (req, res)=> {
     const pdo_input_buffer = JSON.parse(outputString)
     res.json(pdo_input_buffer)
 })
-app.get('/pdo/output', (req, res)=> {
-    const pdo_output_buffer = req.query.pdo_output_buffer //not JSON.parse bcs i need to pass string to cpp function
-    const outputString = CppAddon.getPdoOutput(pdo_output_buffer)
-    const pdo_data_object = JSON.parse(outputString)
-    res.json(pdo_data_object)
+app.post('/pdo/output', (req, res)=> {
+    const pdo_value_chunk = req.body //an array containing pdo raw values
+    const pdo_output_chunk = pdo_value_chunk.map((elem)=>{
+        const inputString = JSON.stringify(elem)
+        const outputString = CppAddon.getPdoOutput(inputString)
+        return JSON.parse(outputString)
+    })
+    res.json(pdo_output_chunk)
 })
 
 app.listen(PORT, ()=>{
