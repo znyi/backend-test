@@ -125,7 +125,35 @@ app.post('/sine/step/4', (req, res)=>{
     console.log(obj)
     res.json(obj)
 })
+app.get('/sine/stop', (req, res)=> { //to stop sine pdo
+    console.log('sine stop')
+    const outputString = CppAddon.getPdoStopCommand()
+    const pdo_input_buffer = JSON.parse(outputString)
+    console.log({'pdo input buffer': pdo_input_buffer})
+    res.json(pdo_input_buffer)
+})
+app.post('/sine/output', (req, res)=> {
+    console.log('sine output')
+    const variables = req.body.variables
+    const a = variables.a
+    const b = variables.b
+    const c = variables.c
 
+    const pdo_value_chunk = req.body.chunk //an array containing pdo raw values
+    const pdo_output_chunk = pdo_value_chunk.map((elem)=>{
+        const inputString = JSON.stringify(elem)
+        const outputString = CppAddon.getPdoOutput(inputString)
+        const {data1,data2} = JSON.parse(outputString) //take the positive value as degree t
+        const t = data1* (Math.PI/180)
+        const coord = {
+            data1: data1,
+            t: t, 
+            y: a*Math.sin(b*t + c)}
+        return coord
+    })
+    console.log({pdo_output_chunk: pdo_output_chunk})
+    res.json(pdo_output_chunk)
+})
 app.listen(PORT, ()=>{
     console.log(`app listening at port ${PORT}.`)
 })
