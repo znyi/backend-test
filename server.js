@@ -17,8 +17,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions))
 
-app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 app.get('/sdo/command', (req, res)=> {
     const sdo_a = req.query.sdo_a //not parseInt bcs i need to pass string to cpp function
@@ -48,6 +48,82 @@ app.get('/pdo/output', (req, res)=> {
     const outputString = CppAddon.getPdoOutput(pdo_output_buffer)
     const pdo_data_object = JSON.parse(outputString)
     res.json(pdo_data_object)
+})
+
+app.post('/sine/step/1', (req, res)=>{
+    console.log('step1')
+    console.log(req.body)
+    const buf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.a]
+    const obj = {
+        variables : {
+            a : req.body.variables.a
+        },
+        buffer : buf
+    }
+    console.log(obj)
+    res.json(obj)
+})
+app.post('/sine/step/2', (req, res)=>{
+    console.log('step2')
+    console.log(req.body)
+    const readBufArr = Array.from(req.body.buffer)
+    const aPrime = readBufArr[readBufArr.length-1]
+    const writeBuf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.b]
+    const obj = {
+        variables : {
+            a : req.body.variables.a,
+            aPrime : aPrime,
+            b : req.body.variables.b,
+        },
+        buffer : writeBuf
+    }
+    console.log(obj)
+    res.json(obj)
+})
+app.post('/sine/step/3', (req, res)=>{
+    console.log('step3')
+    console.log(req.body)
+    const readBufArr = Array.from(req.body.buffer)
+    const bPrime = readBufArr[readBufArr.length-1]
+    const writeBuf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.c]
+    const obj = {
+        variables : {
+            a : req.body.variables.a,
+            aPrime : req.body.variables.aPrime,
+            b : req.body.variables.b,
+            bPrime : bPrime,
+            c : req.body.variables.c
+        },
+        buffer : writeBuf
+    }
+    console.log(obj)
+    res.json(obj)
+})
+app.post('/sine/step/4', (req, res)=>{
+    console.log('step4')
+    console.log(req.body)
+    const readBufArr = Array.from(req.body.buffer)
+    const cPrime = readBufArr[readBufArr.length-1]
+    const writeBuf = [
+        2, 20, 4, 
+        2, 1, 1, 1, 1, 
+        2, 3, 1, 1, 1, 
+        2, 4, 1, 2, 2, 0, 2, 1, 
+        2, 1, 1, 1, 2
+    ]
+    const obj = {
+        variables : {
+            a : req.body.variables.a,
+            aPrime : req.body.variables.aPrime,
+            b : req.body.variables.b,
+            bPrime : req.body.variables.bPrime,
+            c : req.body.variables.c,
+            cPrime : cPrime
+        },
+        buffer : writeBuf
+    }
+    console.log(obj)
+    res.json(obj)
 })
 
 app.listen(PORT, ()=>{

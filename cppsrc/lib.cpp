@@ -21,7 +21,7 @@ std::string cppsrc::getSdoCommand(std::string jsonstr){
     rapidjson::Document sdoCommand(rapidjson::kArrayType);
     rapidjson::Document::AllocatorType& allocator = sdoCommand.GetAllocator();
 
-    uint8_t sdoInputBuffer[] = {2, 20, 4, 2, 9, 1, 1, a}; 
+    uint8_t sdoInputBuffer[] = {2, 20, 1, 2, 9, 1, 1, a}; 
 
     for (uint8_t elem : sdoInputBuffer){
         sdoCommand.PushBack(elem, allocator);
