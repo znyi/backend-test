@@ -52,7 +52,9 @@ app.get('/pdo/output', (req, res)=> {
 
 app.post('/sine/step/1', (req, res)=>{
     console.log('step1')
-    const buf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.a]
+    const cppCommandString = CppAddon.getSdoCommand(JSON.stringify(req.body.variables.a))
+    const buf = JSON.parse(cppCommandString)
+
     const obj = {
         variables : {
             a : req.body.variables.a
@@ -64,8 +66,12 @@ app.post('/sine/step/1', (req, res)=>{
 app.post('/sine/step/2', (req, res)=>{
     console.log('step2')
     const readBufArr = Array.from(req.body.buffer)
-    const aPrime = readBufArr[readBufArr.length-1]
-    const writeBuf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.b]
+    const cppOutputString = CppAddon.getSdoOutput(JSON.stringify(readBufArr))
+    const aPrime = JSON.parse(cppOutputString)
+
+    const cppCommandString = CppAddon.getSdoCommand(JSON.stringify(req.body.variables.b))
+    const writeBuf = JSON.parse(cppCommandString)
+
     const obj = {
         variables : {
             a : req.body.variables.a,
@@ -79,8 +85,12 @@ app.post('/sine/step/2', (req, res)=>{
 app.post('/sine/step/3', (req, res)=>{
     console.log('step3')
     const readBufArr = Array.from(req.body.buffer)
-    const bPrime = readBufArr[readBufArr.length-1]
-    const writeBuf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.c]
+    const cppOutputString = CppAddon.getSdoOutput(JSON.stringify(readBufArr))
+    const bPrime = JSON.parse(cppOutputString)
+
+    const cppCommandString = CppAddon.getSdoCommand(JSON.stringify(req.body.variables.c))
+    const writeBuf = JSON.parse(cppCommandString)
+
     const obj = {
         variables : {
             a : req.body.variables.a,
@@ -96,14 +106,12 @@ app.post('/sine/step/3', (req, res)=>{
 app.post('/sine/step/4', (req, res)=>{
     console.log('step4')
     const readBufArr = Array.from(req.body.buffer)
-    const cPrime = readBufArr[readBufArr.length-1]
-    const writeBuf = [
-        2, 20, 4, 
-        2, 1, 1, 1, 1, 
-        2, 3, 1, 1, 1, 
-        2, 4, 1, 2, 2, 0, 2, 1, 
-        2, 1, 1, 1, 2
-    ]
+    const cppOutputString = CppAddon.getSdoOutput(JSON.stringify(readBufArr))
+    const cPrime = JSON.parse(cppOutputString)
+
+    const outputString = CppAddon.getPdoExecCommand()
+    const writeBuf = JSON.parse(outputString)
+
     const obj = {
         variables : {
             a : req.body.variables.a,
@@ -132,8 +140,7 @@ app.post('/sine/output', (req, res)=> {
 
     const pdo_value_chunk = req.body.chunk //an array containing pdo raw values
     const pdo_output_chunk = pdo_value_chunk.map((elem)=>{
-        const inputString = JSON.stringify(elem)
-        const outputString = CppAddon.getPdoOutput(inputString)
+        const outputString = CppAddon.getPdoOutput(JSON.stringify(elem))
         const {data1,data2} = JSON.parse(outputString) //take the positive value as degree t
         const t = data1* (Math.PI/180)
         const coord = {
