@@ -151,10 +151,11 @@ std::string cppsrc::getPdoOutput(std::string jsonstr){
     rapidjson::Document pdoOutput(rapidjson::kObjectType);
     rapidjson::Document::AllocatorType& allocator = pdoOutput.GetAllocator();
  
-    uint8_t pdoOutputBuffer[15];
+    auto docArray = doc.GetArray();
+    std::vector<uint8_t> pdoOutputBuffer;
 
-    for(int i = 0; i < 15; i++){
-        pdoOutputBuffer[i] = doc[i].GetUint();
+    for(auto& value : docArray){
+        pdoOutputBuffer.push_back(value.GetUint());
     }
     
     float f1;

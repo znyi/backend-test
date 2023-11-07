@@ -52,7 +52,6 @@ app.get('/pdo/output', (req, res)=> {
 
 app.post('/sine/step/1', (req, res)=>{
     console.log('step1')
-    console.log(req.body)
     const buf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.a]
     const obj = {
         variables : {
@@ -60,12 +59,10 @@ app.post('/sine/step/1', (req, res)=>{
         },
         buffer : buf
     }
-    console.log(obj)
     res.json(obj)
 })
 app.post('/sine/step/2', (req, res)=>{
     console.log('step2')
-    console.log(req.body)
     const readBufArr = Array.from(req.body.buffer)
     const aPrime = readBufArr[readBufArr.length-1]
     const writeBuf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.b]
@@ -77,12 +74,10 @@ app.post('/sine/step/2', (req, res)=>{
         },
         buffer : writeBuf
     }
-    console.log(obj)
     res.json(obj)
 })
 app.post('/sine/step/3', (req, res)=>{
     console.log('step3')
-    console.log(req.body)
     const readBufArr = Array.from(req.body.buffer)
     const bPrime = readBufArr[readBufArr.length-1]
     const writeBuf = [2, 20, 1, 2, 9, 1, 1, req.body.variables.c]
@@ -96,12 +91,10 @@ app.post('/sine/step/3', (req, res)=>{
         },
         buffer : writeBuf
     }
-    console.log(obj)
     res.json(obj)
 })
 app.post('/sine/step/4', (req, res)=>{
     console.log('step4')
-    console.log(req.body)
     const readBufArr = Array.from(req.body.buffer)
     const cPrime = readBufArr[readBufArr.length-1]
     const writeBuf = [
@@ -122,14 +115,12 @@ app.post('/sine/step/4', (req, res)=>{
         },
         buffer : writeBuf
     }
-    console.log(obj)
     res.json(obj)
 })
 app.get('/sine/stop', (req, res)=> { //to stop sine pdo
     console.log('sine stop')
     const outputString = CppAddon.getPdoStopCommand()
     const pdo_input_buffer = JSON.parse(outputString)
-    console.log({'pdo input buffer': pdo_input_buffer})
     res.json(pdo_input_buffer)
 })
 app.post('/sine/output', (req, res)=> {
@@ -151,7 +142,6 @@ app.post('/sine/output', (req, res)=> {
             y: a*Math.sin(b*t + c)}
         return coord
     })
-    console.log({pdo_output_chunk: pdo_output_chunk})
     res.json(pdo_output_chunk)
 })
 app.listen(PORT, ()=>{
