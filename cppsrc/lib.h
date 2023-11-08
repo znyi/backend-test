@@ -2,15 +2,18 @@
 namespace cppsrc {
   Napi::Object Init(Napi::Env env, Napi::Object exports);
 
-  std::string getSdoCommand(std::string jsonstr);
-  Napi::String getSdoCommandWrapped(const Napi::CallbackInfo& info);
-  std::string getSdoOutput(std::string jsonstr);
-  Napi::String getSdoOutputWrapped(const Napi::CallbackInfo& info);
+  Napi::String SineStep1Wrapped(const Napi::CallbackInfo& info);
+  Napi::String SineStep2Wrapped(const Napi::CallbackInfo& info);
+  Napi::String SineStep3Wrapped(const Napi::CallbackInfo& info);
+  Napi::String SineStep4Wrapped(const Napi::CallbackInfo& info);
+  Napi::String SineStopWrapped(const Napi::CallbackInfo& info);
+  Napi::String SineOutputWrapped(const Napi::CallbackInfo& info);
 
-  std::string getPdoExecCommand();
-  Napi::String getPdoExecCommandWrapped(const Napi::CallbackInfo& info);
-  std::string getPdoStopCommand();
-  Napi::String getPdoStopCommandWrapped(const Napi::CallbackInfo& info);
-  std::string getPdoOutput(std::string jsonstr);
-  Napi::String getPdoOutputWrapped(const Napi::CallbackInfo& info);
+  std::string sineStep1(std::string jsonstr);
+  std::string sineStep2(std::string jsonstr);
+  std::string sineStep3(std::string jsonstr);
+  std::string sineStep4(std::string jsonstr);
+  std::string sineStop();
+  std::string sineOutput(std::string jsonstr);
+
 }
