@@ -174,8 +174,8 @@ std::string cppsrc::sineStep3(std::string jsonstr){
 {
     "variables": {
         "a": 2,
-        "b": 5,
         "aPrime": 3,
+        "b": 5,
         "c": 8
     },
     "buffer": [
@@ -187,8 +187,8 @@ std::string cppsrc::sineStep3(std::string jsonstr){
 {
     "variables": {
         "a": 2,
-        "b": 5,
         "aPrime": 3,
+        "b": 5,
         "c": 8,
         "bPrime": 6
     },
@@ -245,10 +245,10 @@ std::string cppsrc::sineStep4(std::string jsonstr){
 {
     "variables": {
         "a": 2,
-        "b": 5,
         "aPrime": 3,
-        "c": 8,
+        "b": 5,
         "bPrime": 6,
+        "c": 8,
         "cPrime": 9
     },
     "buffer": [
